@@ -59,9 +59,51 @@ HandlerThread 시작 또는 중단시키기
 - 이에 좋은 해결책은 각 플래시에 메시지 수신함을 주는 방법이다.
 - 플래시 1이 메시지를 메시지함에 넣으면 플래시2가 시간이 남을 때 메시지에 있는 자신의 일을 수행한다.
 - 안드로이드에서는 스레드가 사용하는 메시지 수신함을 메시지 큐(message queue)라고 하며, 메시지 큐를 사용해 동작하는 스레드를 메시지 루프(message loop)라고 한다.
-- 스레드는 자신의 큐에서 새로운 메0시지를 찾기 위해 반복해서 루프를 실행한다.
+- 스레드는 자신의 큐에서 새로운 메시지를 찾기 위해 반복해서 루프를 실행한다.
 - 메시지 루프는 하나의 스레드와 하나의 Looper로 구성되며, Looper는 스레드의 메시지 큐를 관리하는 객체이다.
 - main 스레드는 Looper를 갖는 메시지 루프다. main 스레드가 하는 모든 일은 이것의 Looper에 의해 수행되며, Looper는 자신의 메시지 큐에 있는 메시지들으르 꺼내어 해당 메시지가 지정하는 작업을 수행한다.
+
+    main 스레드                 ThumbnailDownloader
+(Looper) (MessageQueue)    (Looper) (MessageQueue)
+  -> Handler                    ->
+
+
+메시지 구조
+- 플래시가 메시지 수신함에 넣는 메시지는 처리하는 작업이다.
+- 메시지는 Message 클래스의 인스턴스이며 많은 속성을 갖는다
+1. what - 메시지를 나타내는 사용자 정의 정수 값
+2. obj - 메시지와 함께 전달되는 사용자 지정 객체
+3. target - 메시지를 처리할 Handler
+- 메시지의 대상이 되는 것은 Handler의 인스턴스다. Handler라는 이름은 메시지 핸들러의 줄임말로 생각할 수 있다.
+- 메시지는 자동으로 핸들러에 연결되며, 메시지가 처리할 준비가 되면 이것의 처리를 Handler 객체가 맡는다.
+
+핸들러 구조
+- 메시지를 사용해서 실제 작업을 하려면 맨 먼저 Handler 인스턴스가 필요하다. Handler는 Message를 처리하는 대상이면서 Message를 생성하고 게시하는 인터페이스다.
+- Message는 반드시 Lopper에서 게시되고 소비되어야 한다. Looper는 Message 객체들의 메시지 수신함을 소유하기 때문이다. 따라서 Handler는 Looper의 참조를 갖는다.
+- Handler는 정확히 하나의 Looper에 연결되며, Message는 정확히 하나의 대상 Handler에 연결된다.
+- Looper는 큐 전체의 Message를 가지며, 다수의 Message가 동일한 대상 Handler를 참조할 수 있다.
+- 또한, 다수의 Handler가 하나의 Looper에 연결될 수 있다.
+
+Handler <- MessageQueue
+            (Message)
+     ->     (Looper)
+          (HandlerThread)
+
+이미지 내려받기 참고 라이브러리
+- Picasso - 데이터 용량을 제한한다는 단점이 있다.
+- Glide
+- Fresco(페이스북)
+
+StrictMode
+- 안드로이드에서는 앱에서 해서는 안되는 것들이 있다. 예를 들면 main 스레드에서 네트워크 사용을 하면 ANR 이 발생하며 NetWorkOnMainThreadException이 발생한다.
+- StrictMode는 코드의 오류나 보안 문제를 알아내는데 도움을 준다.
+- 애플리케이션의 성능을 저하하는 오류를 알아낼 때도 도움이 된다. StrictMode.enableDefaults()를 호출하여 활성화 할 수 있다.
+- 호출되었을 때 다음 사항에 해당할 경우 로그캣의 메시지로 원인을 알 수 있다.
+1. main 스레드에서의 네트워크 사용
+2. main 스레드에서의 디스크 파일 읽기와 쓰기
+3. 액티비티가 본연의 생명주기를 벗어나 계속 살아있을 때
+4. SQLite 데이터베이스 커서를 닫지 않았을 때
+5. SSL/TLS로 암호화되지 않은 평문을 네트워크로 전송할 때
 
 
 
