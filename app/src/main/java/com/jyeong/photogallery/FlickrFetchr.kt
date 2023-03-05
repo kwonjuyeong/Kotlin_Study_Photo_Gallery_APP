@@ -1,11 +1,15 @@
 package com.jyeong.photogallery
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jyeong.photogallery.api.FlickrApi
 import com.jyeong.photogallery.api.FlickrResponse
 import com.jyeong.photogallery.api.PhotoResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +20,16 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 private const val TAG = "FlickrFetchr"
 class FlickrFetchr {
     private val flickrApi : FlickrApi
+
+    //이미지 내려받기 함수
+    @WorkerThread
+    fun fetchPhoto(url : String) : Bitmap?{
+        //메인 스레드에서 작업할 수 없기 떄문에 execute() 함수를 사용한다.
+        val response : Response<ResponseBody> = flickrApi.fetchUrlBytes(url).execute()
+        val bitmap = response.body()?.byteStream()?.use(BitmapFactory::decodeStream)
+        Log.i(TAG, "Decoded bitmap = $bitmap from Response = $response")
+        return bitmap
+    }
 
     init {
 
@@ -45,14 +59,6 @@ class FlickrFetchr {
         })
         return responseLiveData
     }
-
-
-
-
-
-
-
-
 
 
 }

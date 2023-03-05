@@ -13,6 +13,9 @@ interface FlickrApi {
                 "&nojsoncallback=1" +
                 "&extras=url_s"
     )
-
     fun fetchPhotos(): Call<FlickrResponse>
+
+    //이미지 url을 통해 이미지 가져오기
+    @GET
+    fun fetchUrlBytes(@Url url: String) : Call<ResponseBody>
 }
