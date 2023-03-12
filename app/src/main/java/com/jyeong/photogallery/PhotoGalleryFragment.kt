@@ -15,6 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 
 private const val TAG = "PhotoGalleryFragment"
 
@@ -39,6 +43,12 @@ class PhotoGalleryFragment : Fragment() {
                 photoHolder.bindDrawable(drawable)
             }
         lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
+
+        //workRequest 컴포넌트로 스케쥴링 하기
+        val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.UNMETERED).build()
+        val workRequest = OneTimeWorkRequest.Builder(PollWorker::class.java).setConstraints(constraints).build()
+        WorkManager.getInstance().enqueue(workRequest)
+
     }
 
     override fun onCreateView(
@@ -143,7 +153,7 @@ class PhotoGalleryFragment : Fragment() {
         override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
             val galleryItem = galleryItems[position]
             //홀더 초기값에 사용할 사진을 추가한다.
-            val placeholder: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bill_up_close) ?: ColorDrawable()
+            val placeholder: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.wait) ?: ColorDrawable()
             holder.bindDrawable(placeholder)
 
             thumbnailDownloader.queueThumbnail(holder, galleryItem.url)
