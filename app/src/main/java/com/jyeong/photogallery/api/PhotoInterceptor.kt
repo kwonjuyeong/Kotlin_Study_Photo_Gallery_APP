@@ -12,6 +12,7 @@ class PhotoInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest: Request = chain.request()
 
+        //originalRequest.url()로 원본 URL을 호출 한 후 newBuilder로 쿼리 매개변수를 추가해준다.
         val newUrl: HttpUrl = originalRequest.url().newBuilder()
             .addQueryParameter("api_key", API_KEY)
             .addQueryParameter("format", "json")
@@ -24,6 +25,7 @@ class PhotoInterceptor : Interceptor {
             .url(newUrl)
             .build()
 
+        //바뀐 요청으로 통신하고 결과 값인 Response를 받는다.
         return chain.proceed(newRequest)
     }
 }

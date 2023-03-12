@@ -13,6 +13,7 @@ interface FlickrApi {
     @GET
     fun fetchUrlBytes(@Url url: String): Call<ResponseBody>
 
+    //@Query는 쿼리 매개변수를 URL 끝에 동적으로 추가한다.
     @GET("services/rest?method=flickr.photos.search")
     fun searchPhotos(@Query("text") query: String): Call<FlickrResponse>
 }

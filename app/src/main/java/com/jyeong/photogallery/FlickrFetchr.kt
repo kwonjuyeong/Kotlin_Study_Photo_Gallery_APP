@@ -24,6 +24,7 @@ class FlickrFetchr {
     private val flickrApi: FlickrApi
 
     init {
+        //Interceptor 추가
         val client = OkHttpClient.Builder()
             .addInterceptor(PhotoInterceptor())
             .build()
@@ -68,7 +69,6 @@ class FlickrFetchr {
                 responseLiveData.value = galleryItems
             }
         })
-
         return responseLiveData
     }
 

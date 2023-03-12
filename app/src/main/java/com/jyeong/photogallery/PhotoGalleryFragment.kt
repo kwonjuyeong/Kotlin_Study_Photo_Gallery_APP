@@ -6,10 +6,9 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,9 +28,9 @@ class PhotoGalleryFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         retainInstance = true
+        setHasOptionsMenu(true)
 
-        photoGalleryViewModel =
-            ViewModelProvider(this).get(PhotoGalleryViewModel::class.java)
+        photoGalleryViewModel = ViewModelProvider(this).get(PhotoGalleryViewModel::class.java)
 
         val responseHandler = Handler()
         thumbnailDownloader =
@@ -55,6 +54,45 @@ class PhotoGalleryFragment : Fragment() {
         photoRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         return view
+    }
+
+    //입력한 쿼리 값이 바뀌면 쿼리값으로 사진을 검색하고 뷰 모델에 fetchPhotos에 값을 전달하여 업데이트 한다.
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_photo_gallery, menu)
+
+        val searchItem: MenuItem = menu.findItem(R.id.menu_item_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        searchView.apply {
+
+            setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(queryText: String): Boolean {
+                    Log.d(TAG, "QueryTextSubmit: $queryText")
+                    photoGalleryViewModel.fetchPhotos(queryText)
+                    return true
+                }
+
+                override fun onQueryTextChange(queryText: String): Boolean {
+                    Log.d(TAG, "QueryTextChange: $queryText")
+                    return false
+                }
+            })
+            setOnSearchClickListener {
+                searchView.setQuery(photoGalleryViewModel.searchTerm, false)
+            }
+        }
+    }
+
+    //clear 선택 시 쿼리 삭제
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menu_item_clear ->{
+                photoGalleryViewModel.fetchPhotos("")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,8 +131,7 @@ class PhotoGalleryFragment : Fragment() {
             parent: ViewGroup,
             viewType: Int
         ): PhotoHolder {
-            val view = layoutInflater.inflate(
-                R.layout.list_item_gallery,
+            val view = layoutInflater.inflate(R.layout.list_item_gallery,
                 parent,
                 false
             ) as ImageView
@@ -105,10 +142,8 @@ class PhotoGalleryFragment : Fragment() {
 
         override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
             val galleryItem = galleryItems[position]
-            val placeholder: Drawable = ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.bill_up_close
-            ) ?: ColorDrawable()
+            //홀더 초기값에 사용할 사진을 추가한다.
+            val placeholder: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bill_up_close) ?: ColorDrawable()
             holder.bindDrawable(placeholder)
 
             thumbnailDownloader.queueThumbnail(holder, galleryItem.url)
