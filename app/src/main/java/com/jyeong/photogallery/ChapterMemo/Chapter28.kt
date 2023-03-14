@@ -134,9 +134,40 @@ PollWorker      ->      수신자#1
 - 단, goAsync() 함수를 사용할 댸는 유연성이 떨어진다는 단점이 있다.
 
 로컬 이벤트
-- 브로드캐스트 인텐트는 전역적인 형태로
+- 브로드캐스트 인텐트는 전역적인 형태로 시스템 전체에 걸쳐 정보를 전파한다.
+- 앱의 프로세스 내부(로컬)에서만 이벤트 발생을 전파하고 싶다면 이벤트 버스를 사용하면 된다.
 
+이벤트 버스(event bus)
+- 이벤트 버스는 공유 버스나 데이터 스트림의 개념으로 작동하며, 애플리케이션의 컴포넌트가 구독할 수 있다.
+- 이벤트가 버스에 게시되면 해당 이벤트를 구독하는 컴포넌트가 시작되고, 이 컴포넌트의 콜백 코드도 실행된다.
+- greenrobot의 EventBus, Square의 Otto, RxJava subject와 Observable을 사용할 수 있다.
 
+Event bus 사용하기
+1. 앱에서 Event bus를 사용하려면 프로젝트 bundle에 아래 의존성을 추가한다.
+implementation 'org.greenrobot:eventbus:3.2.0'
+2. 이벤트를 나타내는 클래스를 정의한다.
+class NewFriendAddedEvent(val friendName : String)
+3. 앱에서 이벤트 클래스 인스턴스를 EventBus에 게시한다.
+val eventBus : EventBus = EventBus.getDefault()
+eventBus.post(NewFriendAddedEvent("Susie Q"))
+4. 앱의 다른 곳에서 EventBus의 리스닝을 등록해서 이벤트를 수신한다. 이 때 액티비티나 프래그먼트의 생명주기 함수에서 등록과 해제를 한다.
+5. 적합한 이벤트 타입을 인자로 받는 함수를 구현해서 이벤트를 처리하는 방법을 지정한다. 이때 해당 함수에 @Subscribe 어노테이션을 추가한다.
+@Subscribe(threadMode = ThreadMode.MAIN)
 
-
+RxJava 사용하기
+- RxJava도 이벤트 브로드캐스팅 메커니즘을 구현하는 데 사용될 수 있다.
+- RxJava는 반응형 자바 코드를 작성하기 위한 라이브러리이다.
+- 반응형이란 일련의 연속적인 이벤트들으르 처리하기 위해 이벤트의 발생과 구독을 할 수 있게 해주며, 그런 이벤트 시퀀스를 처리하기 위한 도구들을 제공한다.
+1. 이벤트의 발행과 구독을 할 수 있는 객체인 Subject를 생성한다.
+val eventBus : Subject<Any, Any> = PublishSubject.create<Any>().toSerialized()
+2. 다음과 같이 이벤트를 발행한다.
+val someNewFriend = "Susie Q"
+val event = NewFriendAddedEvent(someNewFriend)
+eventBus.onNext(event)
+3. 다음과 같이 이벤트를 구독한다.
+eventBus.subscribe{ event : Any ->
+    if(event is NewFriendAddedEvent){
+    val friendName = event.friendName
+    }
+}
  */
