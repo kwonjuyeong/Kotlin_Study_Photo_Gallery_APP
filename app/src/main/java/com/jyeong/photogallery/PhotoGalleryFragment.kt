@@ -1,5 +1,6 @@
 package com.jyeong.photogallery
 
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -151,11 +152,25 @@ class PhotoGalleryFragment : VisibleFragment() {
         )
     }
 
-    private class PhotoHolder(private val itemImageView: ImageView)
-        : RecyclerView.ViewHolder(itemImageView) {
+    private inner class PhotoHolder(private val itemImageView: ImageView)
+        : RecyclerView.ViewHolder(itemImageView), View.OnClickListener {
 
+        private lateinit var galleryItem: GalleryItem
+        init {
+            itemView.setOnClickListener(this)
+        }
         val bindDrawable: (Drawable) -> Unit = itemImageView::setImageDrawable
-    }
+        fun bindGalleryItem(item : GalleryItem){
+            galleryItem = item
+        }
+        override fun onClick(v: View?) {
+            /*명시적 인텐트 사용
+            val intent = Intent(Intent.ACTION_VIEW, galleryItem.photoPageUri)*/
+            //웹뷰 사용
+            val intent = PhotoPageActivity.newIntent(requireContext(), galleryItem.photoPageUri)
+            startActivity(intent)
+        }
+        }
 
     private inner class PhotoAdapter(private val galleryItems: List<GalleryItem>)
         : RecyclerView.Adapter<PhotoHolder>() {
@@ -177,7 +192,7 @@ class PhotoGalleryFragment : VisibleFragment() {
             //홀더 초기값에 사용할 사진을 추가한다.
             val placeholder: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.wait) ?: ColorDrawable()
             holder.bindDrawable(placeholder)
-
+            holder.bindGalleryItem(galleryItem)
             thumbnailDownloader.queueThumbnail(holder, galleryItem.url)
         }
     }
