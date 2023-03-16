@@ -1,4 +1,4 @@
-package com.jyeong.draganddraw
+package com.jyeong.BoxDrawingApp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
