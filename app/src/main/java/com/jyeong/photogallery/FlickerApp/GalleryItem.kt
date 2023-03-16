@@ -1,4 +1,4 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,4 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap

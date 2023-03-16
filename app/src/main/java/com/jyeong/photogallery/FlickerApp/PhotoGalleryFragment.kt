@@ -1,6 +1,5 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
-import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -9,15 +8,13 @@ import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
-import com.bignerdranch.android.photogallery.QueryPreferences
+import com.jyeong.photogallery.R
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "PhotoGalleryFragment"
@@ -178,7 +175,8 @@ class PhotoGalleryFragment : VisibleFragment() {
             parent: ViewGroup,
             viewType: Int
         ): PhotoHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_gallery,
+            val view = layoutInflater.inflate(
+                R.layout.list_item_gallery,
                 parent,
                 false
             ) as ImageView

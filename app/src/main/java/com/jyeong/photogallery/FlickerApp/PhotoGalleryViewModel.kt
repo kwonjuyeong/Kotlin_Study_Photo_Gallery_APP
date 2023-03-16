@@ -1,8 +1,7 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.bignerdranch.android.photogallery.QueryPreferences
 
 class PhotoGalleryViewModel(private val app: Application) : AndroidViewModel(app) {
 

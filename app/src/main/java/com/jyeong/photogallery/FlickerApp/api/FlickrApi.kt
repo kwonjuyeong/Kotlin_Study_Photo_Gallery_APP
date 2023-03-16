@@ -1,4 +1,4 @@
-package com.jyeong.photogallery.api
+package com.jyeong.photogallery.FlickerApp.api
 
 import okhttp3.ResponseBody
 import retrofit2.Call

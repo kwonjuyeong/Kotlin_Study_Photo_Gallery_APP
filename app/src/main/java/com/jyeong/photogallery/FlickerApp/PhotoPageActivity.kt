@@ -1,10 +1,11 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jyeong.photogallery.R
 
 class PhotoPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

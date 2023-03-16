@@ -1,16 +1,14 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.app.Notification
 import android.app.PendingIntent
-import android.content.ClipData.newIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.bignerdranch.android.photogallery.QueryPreferences
+import com.jyeong.photogallery.R
 
 private const val TAG = "PollWorker"
 

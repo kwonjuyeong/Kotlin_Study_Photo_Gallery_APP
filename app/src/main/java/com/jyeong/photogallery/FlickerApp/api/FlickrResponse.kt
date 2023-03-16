@@ -1,4 +1,4 @@
-package com.jyeong.photogallery.api
+package com.jyeong.photogallery.FlickerApp.api
 
 class FlickrResponse {
     lateinit var photos: PhotoResponse

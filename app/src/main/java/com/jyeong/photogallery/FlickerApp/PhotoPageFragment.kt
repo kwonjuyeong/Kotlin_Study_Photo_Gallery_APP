@@ -1,4 +1,4 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -11,6 +11,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import com.jyeong.photogallery.R
 
 private const val ARG_URI = "photo_page_url"
 

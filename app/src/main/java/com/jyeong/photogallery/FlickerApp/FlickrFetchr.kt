@@ -1,4 +1,4 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -6,10 +6,10 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jyeong.photogallery.api.FlickrApi
-import com.jyeong.photogallery.api.FlickrResponse
-import com.jyeong.photogallery.api.PhotoInterceptor
-import com.jyeong.photogallery.api.PhotoResponse
+import com.jyeong.photogallery.FlickerApp.api.FlickrApi
+import com.jyeong.photogallery.FlickerApp.api.FlickrResponse
+import com.jyeong.photogallery.FlickerApp.api.PhotoInterceptor
+import com.jyeong.photogallery.FlickerApp.api.PhotoResponse
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call

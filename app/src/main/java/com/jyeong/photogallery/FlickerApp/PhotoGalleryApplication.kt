@@ -1,9 +1,10 @@
-package com.jyeong.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.jyeong.photogallery.R
 
 const val NOTIFICATION_CHANNEL_ID = "flickr_poll"
 

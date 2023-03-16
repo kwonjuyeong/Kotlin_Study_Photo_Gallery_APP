@@ -139,8 +139,4 @@ WebView.addJavascriptInterface(object : Any(){
 - 따라서 안드로이드 UI를 변경하려면 Handler를 사용해서 main 스레드에 제어를 넘겨주어야 한다.
 2. 데이터 타입을 많이 지원하지 못한다.
 - String과 기본 타입만 가능하다. 따라서 더 복잡한 타입에서는 String을 JSON으로 변환해서 전송하고, 받을 때는 파싱한다.
-
-
-
-
  */

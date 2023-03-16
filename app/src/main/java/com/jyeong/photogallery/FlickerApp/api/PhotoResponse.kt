@@ -1,6 +1,6 @@
-package com.jyeong.photogallery.api
+package com.jyeong.photogallery.FlickerApp.api
 
-import com.jyeong.photogallery.GalleryItem
+import com.jyeong.photogallery.FlickerApp.GalleryItem
 import com.google.gson.annotations.SerializedName
 
 class PhotoResponse {

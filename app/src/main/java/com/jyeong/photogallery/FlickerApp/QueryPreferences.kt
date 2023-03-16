@@ -1,4 +1,4 @@
-package com.bignerdranch.android.photogallery
+package com.jyeong.photogallery.FlickerApp
 
 import android.content.Context
 import android.preference.PreferenceManager
